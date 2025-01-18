@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const { username, email, password } = reqBody
 
     //validation
-    console.log(reqBody)
+    console.log('req body', reqBody)
 
     const user = await User.findOne({ email })
 
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     })
 
     const savedUser = await newUser.save()
-    console.log(savedUser);
+    console.log('savedUser', savedUser);
 
     //send verfication mail
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id })
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     })
 
 
-  } catch (error) {
-
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
